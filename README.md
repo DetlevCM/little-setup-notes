@@ -1,0 +1,2 @@
+# little-setup-notes
+Over time, we come to set up many different programs/tools. At times, the first setup can be tedious, difficult even, though the necessary steps are actually quite trivial. This repository is for personal setup notes, to remind myself, but also potentially offer suggestions to others. What I describe here is just intended to work, it is NOT a safe/secured configuration. Always get other advice too.
