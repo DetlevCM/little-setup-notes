@@ -1,0 +1,48 @@
+
+
+One of the joys but also blights of academia is an overabundance of literature in some disciplines.
+This lead me to research solutions that could help me search trhough my local library to re-extract papers I had discovered earlier.
+
+This solution had to be:
+- free
+- able to handle scanned documents without OCR (old papers)
+
+What I eventually settled on, is OpenSemanticSearch: https://www.opensemanticsearch.org/
+
+My personal preference is to use the Server Appliance Image and tweak the necessary settings to allow me to access it via my browser.
+
+1) Set up port forwarding in VirtualBox to redirect to the VM and allow SSH access (TCP for both suffices)
+
+2) Share index directory (read/write) and documents directory (read) with the VM
+
+3) Adjust resource usage to your computer (yes its slow with less RAM, but it works).
+
+Due to the academic route, I would call my documents directory papers - shared with the VM, this becomes /media/sf_papers internally. The index directory needs to be called index as per documentation and becomes /media/sf_index internally.
+
+Once the VM is ready, the next steps are:
+
+4) Create a symbolic link to the paper directory in /var/www/html and configure apache2.conf as well as add the apache2 user to the vboxsf user group to ensure it can access the files.
+
+ln -s /media/sf_papers/ /var/www/html/papers
+
+<Directory /var/www/html/papers>
+      Options Indexes FollowSymlinks
+      AllowOverride All
+      Require all granted
+</Directory>
+
+usermod -a -G vboxsf www-data
+
+5) Adjust the OpenSemanticSearch settings in connector files to ensure the documents can be served properly by adjusting /etc/opensemanti-search/connector-files .
+
+config['mappings'] = { "/media/sf_papers": "http://127.0.0.1:8080/papers" }
+
+config['facet_path_strip_prefix'] = [ "/media/sf_" ]
+ 
+If you copy the connector-files from "outside" during setup filem make sure the permissions are correct - they should be 664.
+(That was a weird problem to understand...)
+
+
+For the most fundamental unsecured setup, this suffices. - Any details on OpenSemanticSearch can be found in the omnline documentation https://www.opensemanticsearch.org/doc/admin or the associated Github pages https://github.com/opensemanticsearch .
+
+
