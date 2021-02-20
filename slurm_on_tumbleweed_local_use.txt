@@ -1,0 +1,30 @@
+
+In the context of scientific calculations, it can be useufl to run a 
+scheduler on a local computer to allow the easy management of compute
+tasks. With continuous developments and changes, the free job scheduler 
+which is widely available seems to be the slurm scheduler, available 
+in the repositories.
+
+These notes are a reminder which quirks where encountered in a recent 
+slurm configuration - 2021/02/20.
+The operating sytem is openSUSE Tumbleweed.
+
+- install slurm including the dependencies via zypper/yast
+- configure a slurm instance using the web intferface available, for 
+  example from for example https://slurm.schedmd.com/configurator.html
+  (Documentation: https://slurm.schedmd.com/slurm.conf.html )
+
+At this point, slumrmd can be started, slurmctld return an error.
+A little bit of looking revealed that the default spool location had 
+permission problems. Creating /opt/slurm/spool with permissions for 
+slurm:slurm resovled these.
+Care also needs to be taken to ensure that CPUs, cores, sockets and 
+threads are correctly configured. 
+
+While it used to be that slurm did not accept localhost as the IP 
+addres configuration for the host/compute node , this now seems to be 
+supported which is excellent news for single mqchine home users.
+(This not tested with actual compute tasks at this point.)
+
+
+ 
