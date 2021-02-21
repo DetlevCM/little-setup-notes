@@ -26,5 +26,7 @@ addres configuration for the host/compute node , this now seems to be
 supported which is excellent news for single mqchine home users.
 (This not tested with actual compute tasks at this point.)
 
-
- 
+Additional note:
+- make sure the munge authentication service is running
+- ensure that the slum.conf file is set up correctly, SLURM is very 
+  sensitive to minor bugs in the file
